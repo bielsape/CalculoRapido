@@ -1,1 +1,7 @@
-Número es una app de entrenamiento de cálculo mental diseñada para practicar matemáticas de forma rápida y sencilla. Permite elegir una o varias operaciones —sumas, restas, multiplicaciones y divisiones—, definir el rango de números y jugar en modo infinito, contrarreloj o por número de preguntas. Durante cada sesión muestra los aciertos, la precisión y el tiempo en directo, y al finalizar ofrece un resumen de resultados. Cuenta con diseño oscuro, controles adaptados para ordenador y un teclado numérico propio para móviles.
+Número — Entrenamiento Matemático
+
+Aplicación web de entrenamiento de cálculo mental, creada con HTML, CSS y JavaScript sin dependencias externas. Funciona localmente: solo hay que abrir index.html en el navegador.
+
+Permite practicar sumas, restas, multiplicaciones y divisiones, eligiendo una o varias operaciones a la vez. Incluye rangos predeterminados o personalizados, tres modos de juego (infinito, contrarreloj y preguntas fijas), puntuación y precisión en directo, y una pantalla final con los resultados de cada sesión.
+
+La interfaz tiene un diseño oscuro y adaptable. En ordenador se puede responder usando el teclado y Enter; en móvil incorpora un teclado numérico propio con botones para borrar, limpiar y enviar la respuesta.
