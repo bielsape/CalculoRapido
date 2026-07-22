@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Número — Entrenamiento matemático</title>
+  <style>
+    :root { --bg:#0c1020; --panel:#151b31; --panel2:#1d2540; --line:#303b5e; --text:#f4f7ff; --muted:#a8b2ce; --accent:#7c8cff; --accent2:#9f7aea; --good:#40d59d; --bad:#ff6e83; --warning:#ffc968; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--text); background:radial-gradient(circle at 14% 0%,#202a55 0,transparent 31rem),radial-gradient(circle at 95% 95%,#2b1d50 0,transparent 34rem),var(--bg); }
+    button,input,select { font:inherit; } button { cursor:pointer; }
+    .app { width:min(100% - 32px,1000px); margin:auto; padding:22px 0 28px; }
+    .brand { display:flex; align-items:center; gap:11px; color:#dce2ff; font-weight:800; letter-spacing:.02em; margin-bottom:18px; }
+    .logo { display:grid; place-items:center; width:34px; height:34px; color:white; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:10px; font-size:21px; box-shadow:0 8px 24px #6979e640; }
+    .screen { display:none; } .screen.active { display:block; animation:enter .3s ease; } @keyframes enter { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:none } }
+    .intro { max-width:650px; margin-bottom:18px; } h1 { margin:0 0 6px; font-size:clamp(30px,4.3vw,46px); letter-spacing:-.045em; } h2 { margin:0; font-size:23px; letter-spacing:-.025em; } .intro p,.sub { color:var(--muted); line-height:1.45; margin:0; }
+    .settings { display:grid; grid-template-columns:1.2fr .8fr; gap:12px; } .card { padding:17px; border:1px solid #ffffff13; border-radius:17px; background:linear-gradient(150deg,#19203aee,#12182bdf); box-shadow:0 18px 45px #00000026; } .wide { grid-row:span 2; }
+    .label { display:block; margin:0 0 10px; font-size:12px; font-weight:750; text-transform:uppercase; color:#c7d0ee; letter-spacing:.1em; }
+    .choices { display:grid; gap:7px; } .ops { grid-template-columns:repeat(2,1fr); } .choice { position:relative; min-height:43px; display:flex; align-items:center; gap:9px; padding:8px 11px; color:#c5cee8; border:1px solid var(--line); border-radius:10px; background:#12182a; transition:.18s; } .choice:hover { border-color:#6979b0; } .choice input { appearance:none; position:absolute; inset:0; margin:0; cursor:pointer; } .choice:has(input:checked) { color:white; background:#252d50; border-color:#8c9bff; box-shadow:inset 0 0 0 1px #8c9bff; } .symbol { width:23px; height:23px; display:grid; place-items:center; border-radius:7px; background:#26315b; color:#b9c6ff; font-weight:800; }
+    select { width:100%; border:1px solid var(--line); border-radius:10px; background:#12182a; padding:10px 12px; color:var(--text); outline:none; } .custom { display:flex; gap:9px; margin-top:8px; } .custom[hidden] { display:none; } .custom label { flex:1; color:#9da9c9; font-size:11px; } .custom input { width:100%; margin-top:4px; padding:8px 9px; color:var(--text); border:1px solid var(--line); border-radius:10px; background:#12182a; outline:none; } .custom input[type="number"] { appearance:textfield; -moz-appearance:textfield; } .custom input[type="number"]::-webkit-inner-spin-button, .custom input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; } .custom input:focus,select:focus { border-color:var(--accent); }
+    .mode-detail { color:#7f8baa; font-size:12px; margin-left:auto; padding-left:5px; } .start { grid-column:1/-1; width:100%; padding:13px; border:0; border-radius:12px; color:white; font-size:16px; font-weight:800; background:linear-gradient(135deg,#7385ff,#986cf1); box-shadow:0 12px 28px #6575f050; transition:.18s; } .start:hover { transform:translateY(-2px); filter:brightness(1.07); } .hint { grid-column:1/-1; margin:0; color:#8490b1; text-align:center; font-size:12px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; } .game-title { font-weight:750; color:#d7dfff; } .exit { border:1px solid var(--line); background:transparent; color:#aab5d3; padding:8px 12px; border-radius:9px; } .exit:hover { color:white; border-color:#7180ad; }
+    .game-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; } .metric { padding:14px 17px; border:1px solid #ffffff12; border-radius:14px; background:#151b31b8; } .metric span { display:block; font-size:12px; text-transform:uppercase; letter-spacing:.09em; color:#91a0c4; } .metric strong { display:block; margin-top:4px; font-size:22px; letter-spacing:-.03em; }
+    .question-card { min-height:365px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:35px 20px; border:1px solid #ffffff12; border-radius:22px; background:linear-gradient(145deg,#1b2340f5,#121729f5); box-shadow:0 24px 55px #00000035; } .progress { align-self:stretch; height:5px; overflow:hidden; margin:-16px 0 45px; border-radius:10px; background:#2a3352; } .progress i { display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .25s; }
+    .problem { margin:0 0 27px; font-size:clamp(48px,9vw,82px); font-weight:800; letter-spacing:-.06em; } .answer { width:min(100%,360px); padding:16px 19px; border:2px solid #3b476e; border-radius:14px; color:white; background:#0d1222; font-size:25px; font-weight:700; text-align:center; outline:none; transition:.15s; } .answer:focus { border-color:#92a0ff; box-shadow:0 0 0 4px #8492ff1f; } .answer.correct { border-color:var(--good); background:#173d35; } .answer.wrong { border-color:var(--bad); background:#481f31; } .answer::placeholder { color:#576383; font-weight:500; font-size:16px; } .enter-hint { margin:14px 0 0; color:#8190b4; font-size:13px; }
+    .keypad { display:none; width:min(100%,360px); grid-template-columns:repeat(3,1fr); gap:7px; margin-top:13px; } .key { min-height:42px; border:1px solid #3a476d; border-radius:10px; color:#e9edff; background:#202944; font-size:17px; font-weight:750; } .key:active { transform:scale(.96); background:#34406a; } .key.send { grid-column:span 3; border-color:#7688ff; background:#6074ed; color:white; }
+    .results { max-width:610px; margin:6vh auto 0; padding:35px; text-align:center; } .trophy { width:66px; height:66px; display:grid; place-items:center; margin:0 auto 18px; border-radius:50%; background:#2d2853; font-size:31px; } .results h1 { font-size:39px; } .results .sub { margin-top:8px; } .result-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:28px 0; text-align:left; } .result { padding:16px; border-radius:12px; background:#0f1528; } .result span { display:block; color:#96a3c5; font-size:13px; } .result strong { display:block; margin-top:4px; font-size:24px; } .again { width:100%; padding:14px; border:0; border-radius:12px; color:white; background:var(--accent); font-weight:800; font-size:16px; }
+    @media(max-width:650px){ .app{width:min(100% - 24px,1000px);padding-top:18px}.settings{grid-template-columns:1fr}.wide{grid-row:auto}.ops{grid-template-columns:1fr}.game-grid{gap:7px}.metric{padding:11px}.metric strong{font-size:18px}.question-card{min-height:330px}.results{padding:25px 18px}.result-grid{grid-template-columns:1fr 1fr} }
+    @media(pointer:coarse){ .keypad{display:grid}.enter-hint{display:none}.question-card{min-height:0;padding:25px 20px}.progress{margin:-9px 0 25px} }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="brand"><div class="logo">+</div> NÚMERO</div>
+    <section id="startScreen" class="screen active">
+      <div class="intro"><h1>Entrena tu cálculo mental.</h1><p>Configura tu sesión y responde tan rápido como puedas. Cada respuesta cuenta.</p></div>
+      <div class="settings">
+        <div class="card wide"><span class="label">Operaciones</span><div class="choices ops">
+          <label class="choice"><input type="checkbox" name="operation" value="add" checked><b class="symbol">+</b> Sumas</label>
+          <label class="choice"><input type="checkbox" name="operation" value="sub"><b class="symbol">−</b> Restas</label>
+          <label class="choice"><input type="checkbox" name="operation" value="mul"><b class="symbol">×</b> Multiplicaciones</label>
+          <label class="choice"><input type="checkbox" name="operation" value="div"><b class="symbol">÷</b> Divisiones</label>
+          <label class="choice" style="grid-column:1/-1"><input id="allOperations" type="checkbox"><b class="symbol">↯</b> Todas <span class="mode-detail">Seleccionar las cuatro</span></label>
+        </div><p id="operationError" style="margin:9px 0 0;color:#ff91a1;font-size:12px" hidden>Selecciona al menos una operación para empezar.</p></div>
+        <div class="card"><span class="label">Rango de números</span><select id="range"><option value="10">Del 0 al 10</option><option value="20">Del 0 al 20</option><option value="50" selected>Del 0 al 50</option><option value="100">Del 0 al 100</option><option value="custom">Personalizado</option></select><div class="custom" id="customWrap" hidden><label>Desde<input id="customMin" type="number" min="0" max="9999" value="0" aria-label="Número inicial"></label><label>Hasta<input id="customMax" type="number" min="1" max="10000" value="100" aria-label="Número final"></label></div></div>
+        <div class="card"><span class="label">Modo de juego</span><div class="choices">
+          <label class="choice"><input type="radio" name="mode" value="infinite" checked>♾️ Infinito <span class="mode-detail">Sin límite</span></label>
+          <label class="choice"><input type="radio" name="mode" value="timed">⏱️ Contrarreloj <span class="mode-detail">60 segundos</span></label>
+          <label class="choice"><input type="radio" name="mode" value="fixed">🎯 Preguntas <span class="mode-detail">20 operaciones</span></label>
+        </div></div>
+        <button id="startButton" class="start">Comenzar entrenamiento <span>→</span></button><p class="hint">Enter para responder · Esc para terminar la sesión</p>
+      </div>
+    </section>
+    <section id="gameScreen" class="screen">
+      <div class="topbar"><span id="gameTitle" class="game-title">Entrenamiento</span><button id="endButton" class="exit">Terminar</button></div>
+      <div class="game-grid"><div class="metric"><span>Aciertos</span><strong id="correct">0</strong></div><div class="metric"><span>Precisión</span><strong id="accuracy">—</strong></div><div class="metric"><span id="timerLabel">Tiempo</span><strong id="timer">00:00</strong></div></div>
+      <div class="question-card"><div class="progress"><i id="progressFill"></i></div><div id="problem" class="problem">12 + 8</div><input id="answer" class="answer" inputmode="numeric" autocomplete="off" placeholder="Escribe tu respuesta"><div id="keypad" class="keypad" aria-label="Teclado numérico"><button class="key" data-number="1">1</button><button class="key" data-number="2">2</button><button class="key" data-number="3">3</button><button class="key" data-number="4">4</button><button class="key" data-number="5">5</button><button class="key" data-number="6">6</button><button class="key" data-number="7">7</button><button class="key" data-number="8">8</button><button class="key" data-number="9">9</button><button class="key" data-action="delete">⌫</button><button class="key" data-number="0">0</button><button class="key" data-action="clear">C</button><button class="key send" data-action="send">Enviar</button></div><p class="enter-hint">Pulsa <b>Enter</b> para continuar</p></div>
+    </section>
+    <section id="resultScreen" class="screen"><div class="card results"><div class="trophy">✦</div><h1>Sesión completada</h1><p id="resultMessage" class="sub">Buen trabajo.</p><div class="result-grid"><div class="result"><span>Aciertos</span><strong id="resultCorrect">0</strong></div><div class="result"><span>Errores</span><strong id="resultErrors">0</strong></div><div class="result"><span>Precisión</span><strong id="resultAccuracy">0%</strong></div><div class="result"><span>Tiempo</span><strong id="resultTime">00:00</strong></div></div><button id="againButton" class="again">Jugar otra vez</button></div></section>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id);
+    const screens = ['startScreen','gameScreen','resultScreen'];
+    let state = {}, ticker;
+    function show(id){ screens.forEach(s => $(s).classList.toggle('active',s===id)); }
+    function format(seconds){ return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`; }
+    function config(){ const range = $('range').value, ops=[...document.querySelectorAll('input[name="operation"]:checked')].map(input=>input.value); let min=0,max=Number(range); if(range==='custom'){ min=Math.max(0,Number($('customMin').value)||0); max=Math.max(min+1,Number($('customMax').value)||100); } return { ops, mode:document.querySelector('input[name="mode"]:checked').value, min,max }; }
+    function random(max){ return Math.floor(Math.random()*(max+1)); }
+    function inRange(min,max){ return min+Math.floor(Math.random()*(max-min+1)); }
+    function newQuestion(){
+      let op = state.ops[random(state.ops.length-1)], a,b,answer,symbol;
+      if(op==='add'){ a=inRange(state.min,state.max); b=inRange(state.min,state.max); answer=a+b; symbol='+'; }
+      if(op==='sub'){ a=inRange(state.min,state.max); b=inRange(state.min,a); answer=a-b; symbol='−'; }
+      if(op==='mul'){ a=inRange(state.min,state.max); b=inRange(state.min,state.max); answer=a*b; symbol='×'; }
+      if(op==='div'){ b=Math.max(1,inRange(state.min,state.max)); answer=inRange(state.min,state.max); a=b*answer; symbol='÷'; }
+      state.currentAnswer=answer; $('problem').textContent=`${a} ${symbol} ${b}`; $('answer').value=''; $('answer').className='answer'; if(!window.matchMedia('(pointer: coarse)').matches) $('answer').focus();
+    }
+    function update(){ const total=state.correct+state.errors; $('correct').textContent=state.correct; $('accuracy').textContent=total?`${Math.round(state.correct/total*100)}%`:'—'; const elapsed=Math.floor((Date.now()-state.started)/1000); const display=state.mode==='timed'?Math.max(0,60-elapsed):elapsed; $('timer').textContent=format(display); $('timerLabel').textContent=state.mode==='timed'?'Restante':'Tiempo'; if(state.mode==='fixed') $('progressFill').style.width=`${Math.min(100,total/20*100)}%`; else if(state.mode==='timed') $('progressFill').style.width=`${Math.max(0,100-elapsed/60*100)}%`; else $('progressFill').style.width='0'; if(state.mode==='timed'&&elapsed>=60) finish(); }
+    function submit(){ if(!state.running || $('answer').value.trim()==='') return; const right=Number($('answer').value.trim())===state.currentAnswer; right?state.correct++:state.errors++; $('answer').classList.add(right?'correct':'wrong'); update(); setTimeout(()=>{ if(!state.running)return; if(state.mode==='fixed'&&state.correct+state.errors>=20) finish(); else newQuestion(); },right?150:400); }
+    function start(){ const settings=config(); if(!settings.ops.length){ $('operationError').hidden=false; return; } $('operationError').hidden=true; state={...settings,correct:0,errors:0,running:true,started:Date.now()}; $('gameTitle').textContent=state.mode==='timed'?'Contrarreloj · 60 segundos':state.mode==='fixed'?'20 preguntas':'Modo infinito'; show('gameScreen'); newQuestion(); update(); clearInterval(ticker); ticker=setInterval(update,250); }
+    function finish(){ if(!state.running)return; state.running=false; clearInterval(ticker); const total=state.correct+state.errors, elapsed=Math.floor((Date.now()-state.started)/1000); $('resultCorrect').textContent=state.correct; $('resultErrors').textContent=state.errors; $('resultAccuracy').textContent=total?`${Math.round(state.correct/total*100)}%`:'—'; $('resultTime').textContent=format(state.mode==='timed'?60:elapsed); $('resultMessage').textContent=total?`Has respondido ${total} ${total===1?'operación':'operaciones'}. ¡Sigue así!`:'No has respondido ninguna operación esta vez.'; show('resultScreen'); }
+    const operationInputs=[...document.querySelectorAll('input[name="operation"]')];
+    function syncAllOperations(){ $('allOperations').checked=operationInputs.every(input=>input.checked); }
+    $('allOperations').addEventListener('change',e=>operationInputs.forEach(input=>input.checked=e.target.checked));
+    operationInputs.forEach(input=>input.addEventListener('change',()=>{ $('operationError').hidden=true; syncAllOperations(); }));
+    const usesTouchKeypad=window.matchMedia('(pointer: coarse)').matches; if(usesTouchKeypad) $('answer').readOnly=true;
+    $('keypad').addEventListener('click',e=>{ const key=e.target.closest('button'); if(!key||!state.running)return; const {number,action}=key.dataset; if(number!==undefined) $('answer').value+=number; if(action==='delete') $('answer').value=$('answer').value.slice(0,-1); if(action==='clear') $('answer').value=''; if(action==='send') submit(); });
+    $('range').addEventListener('change',e=>$('customWrap').hidden=e.target.value!=='custom'); $('startButton').addEventListener('click',start); $('endButton').addEventListener('click',finish); $('againButton').addEventListener('click',()=>show('startScreen')); $('answer').addEventListener('keydown',e=>{if(e.key==='Enter')submit()}); document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.running)finish()});
+  </script>
+</body>
+</html>
